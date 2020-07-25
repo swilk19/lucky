@@ -49,8 +49,17 @@ module Gen::Mixins::MigrationWithColumns
       column_type = column_parts.last
       column_parts.size == 2 &&
         column_name == column_name.underscore &&
-        SUPPORTED_TYPES.includes?(column_type)
+        supported_column_type?(column_type)
     end
+  end
+
+  private def supported_column_type?(column_type) : Bool
+    SUPPORTED_TYPES.includes?(column_type) ||
+      nilable_column_types.includes?(column_type)
+  end
+
+  private def nilable_column_types
+    SUPPORTED_TYPES.map &.+('?')
   end
 
   private def column_arguments? : Bool

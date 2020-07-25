@@ -31,7 +31,7 @@ describe Gen::Model do
       Gen::Migration.silence_output do
         io = IO::Memory.new
         model_name = "ContactInfo"
-        ARGV.push(model_name, "name:String", "contacted_at:Time")
+        ARGV.push(model_name, "name:String", "contacted_at:Time?")
 
         Gen::Model.new.call(io)
 
@@ -45,7 +45,7 @@ describe Gen::Model do
           "./src/operations/save_contact_info.cr": "class SaveContactInfo < ContactInfo::SaveOperation",
           "./src/queries/contact_info_query.cr": "class ContactInfoQuery < ContactInfo::BaseQuery"
         should_generate_migration named: "create_contact_infos.cr",
-          with: "add contacted_at : Time"
+          with: "add contacted_at : Time?"
       end
     end
   end
